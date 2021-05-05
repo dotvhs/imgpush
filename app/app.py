@@ -175,6 +175,7 @@ def upload_image():
             raise CollisionError
         with Image(filename=tmp_filepath) as img:
             img.strip()
+            output_size = img.size
             if output_type not in ["gif"]:
                 with img.sequence[0] as first_frame:
                     with Image(image=first_frame) as first_frame_img:
@@ -192,7 +193,7 @@ def upload_image():
     if error:
         return jsonify(error=error), 400
 
-    return jsonify(filename=output_filename)
+    return jsonify(filename=output_filename, width=output_size[0], height=output_size[1])
 
 
 @app.route("/<string:filename>")
